@@ -76,6 +76,18 @@ UserSchema.methods.generateAuthToken = function () {
 };
 
 
+UserSchema.methods.generateAuthToken = function () {
+    var user = this;
+    var access = 'passwordreset';
+    var token = jwt.sign({ _id: user._id.toHexString(), access }, "z[/+$s'c:^3O70:H").toString();
+
+    user.Tokens.push({ access, token });
+
+    return user.save().then(() => {
+        return token;
+    });
+};
+
 UserSchema.statics.findByToken = function (token) {
     var User = this;
     var decoded;
