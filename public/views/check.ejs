@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        function confirmPass() {
+            var pass = document.getElementById("pass").value
+            var confPass = document.getElementById("c_pass").value
+            if(pass != confPass) {
+                alert('Wrong confirm password !');
+            }
+        }
+    </script>
+    <form id="form" action="" method="post">
+        <label for="pass">Password</label>
+        <input type="password" id="pass" class="text" name="your_pass" value=""/>
+        <label for="c_pass">Confirm Password</label>
+        <input type="password" id="c_pass" class="text" name="your_c_pass" value="" onblur="confirmPass()"/>
+    </form>
+</body>
+</html>
