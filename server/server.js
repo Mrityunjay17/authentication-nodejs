@@ -62,17 +62,6 @@ app.get('/login',(req,res)=>{
     }
 })
 
-app.get('/device', (req, res) => {
-
-  res.send(req.useragent.source + ' your ip address is ' + req.ip);
-})
-
-app.get('/register', (req, res) => {
-
-  res.render('register');
-});
-
-
 
 app.post('/register', urlencodedParser, (req, res) => {
   var user = new User(req.body);
@@ -96,7 +85,7 @@ app.get('/home', (req, res) => {
         if(!user){
           return res.clearCookie('x-auth').redirect('/');
         }
-        res.send(req.user);
+        res.send(user);
       }).catch((e)=>{
         res.clearCookie('x-auth').redirect('/');
       })
