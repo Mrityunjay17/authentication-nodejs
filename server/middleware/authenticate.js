@@ -16,7 +16,6 @@ var authenticate=(req,res,next)=>{
         })
         
       }
-    
       else{
         res.render('home');
       }
