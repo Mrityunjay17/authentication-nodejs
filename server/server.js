@@ -1,3 +1,5 @@
+// Mrityunjay Pandey
+
 const { mongoose, ObjectID } = require('./db/mongoose-db');
 const { User } = require('./models/users');
 const express = require('express');
@@ -12,6 +14,7 @@ const fs =require('fs');
 var app = express()
 app.use(useragent.express());
 app.use(cookieParser('M#9l.n3|?+{@)<v'));
+
 app.use('/css', express.static(path.join(__dirname, './../public/css')));
 app.use('/image', express.static(path.join(__dirname, './../public/image')));
 app.use('/audio', express.static(path.join(__dirname, './../public/audio')));
@@ -44,8 +47,7 @@ app.post('/login', urlencodedParser, (req, res) => {
 app.get('/login',(req,res)=>{
 
   var token = req.signedCookies['x-auth'];
-  
-    if (token) { 
+    if (token) {
       User.findByToken(token).then((user)=>{
         if(!user){
           return res.clearCookie('x-auth').redirect('/login');
@@ -54,13 +56,11 @@ app.get('/login',(req,res)=>{
       }).catch((e)=>{
         res.clearCookie('x-auth').redirect('/login');
       })
-      
     }
-  
     else{
       res.render('Login');
     }
-})
+});
 
 
 app.post('/register', urlencodedParser, (req, res) => {
@@ -74,6 +74,9 @@ app.post('/register', urlencodedParser, (req, res) => {
   });
 });
 
+app.get('/register',(req,res)=>{
+  res.render('register');
+});
 
 app.get('/home', (req, res) => {
 
@@ -99,5 +102,7 @@ app.get('/home', (req, res) => {
   
 });
 
-var server = app.listen(80);
-console.log('server is running on port 80');
+var server = app.listen(80,()=>{
+    console.log('server is running on port 80');
+});
+

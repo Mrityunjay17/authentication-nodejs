@@ -54,6 +54,7 @@ var UserSchema = new mongoose.Schema({
 });
 
 
+/*
 UserSchema.methods.toJSON = function () {
     var user = this;
     var userObject = user.toObject();
@@ -62,6 +63,7 @@ UserSchema.methods.toJSON = function () {
         EmailId: user.EmailId
     });
 }
+*/
 
 UserSchema.methods.generateAuthToken = function () {
     var user = this;
@@ -75,11 +77,10 @@ UserSchema.methods.generateAuthToken = function () {
     });
 };
 
-
-UserSchema.methods.generateAuthToken = function () {
+UserSchema.methods.generatepasswordresetToken = function () {
     var user = this;
-    var access = 'passwordreset';
-    var token = jwt.sign({ _id: user._id.toHexString(), access }, "z[/+$s'c:^3O70:H").toString();
+    var access = 'forgetpassword';
+    var token = jwt.sign({ _id: user._id.toHexString(), access }, "z[/+$s'c:^3O707vrEVBTDS:H").toString();
 
     user.Tokens.push({ access, token });
 
@@ -87,6 +88,7 @@ UserSchema.methods.generateAuthToken = function () {
         return token;
     });
 };
+
 
 UserSchema.statics.findByToken = function (token) {
     var User = this;
