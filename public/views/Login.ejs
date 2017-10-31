@@ -5,26 +5,20 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="/css/login.css" type="text/css" rel="stylesheet"/>
-
-    <script type="text/javascript">
-        var uri = window.location.toString();
-        if (uri.indexOf("?") > 0) {
-            var clean_uri = uri.substring(0, uri.indexOf("?"));
-            window.history.replaceState({}, document.title, clean_uri);
-        }
-    </script>
-
 </head>
 <body>
    
-   <div class="login-box" >
+   <div class="login-box">
        <form class="forms" method="post" action="/login">
            <h2>Login</h2>
            <label for="emailid">Email Id</label>
-           <input type="email" id="emailid" name="EmailId" placeholder="Enter your EmailId" />
+           <input type="email" id="emailid" name="EmailId" placeholder="Enter your EmailId" required="true"/>
            <label for="password">Password</label>
-           <input type="password" id="password" name="Password" placeholder="Enter your Password"/>
-           <button>Login</button>
+           <input type="password" id="password" name="Password" placeholder="Enter your Password" required="true"/>
+           <button> Login</button>
+           <a style="float: right" href="/">Forget Password?</a>
+
+           <a  class="aa" href="/home">Create Account</a>
        </form>
    </div>
 
