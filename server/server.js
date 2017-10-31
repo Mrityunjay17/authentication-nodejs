@@ -59,12 +59,11 @@ app.post('/login', urlencodedParser, (req, res) => {
   }).catch((e) => {
     res.status(400).send(e);
   })
-})
+});
 
 app.get('/createaccount',(req,res)=>{
     res.render('Createaccount');
 });
-
 
 app.post('/createaccount', urlencodedParser, (req, res) => {
   var user = new User(req.body);
@@ -76,6 +75,16 @@ app.post('/createaccount', urlencodedParser, (req, res) => {
     res.status(400).send(e);
   });
 });
+
+
+app.get('/forgetpassword',(req,res)=>{
+    res.render('forgetpassword')
+});
+
+app.post('/forgetpassword',(req,res)=>{
+    console.log(req.body.EmailId);
+});
+
 
 app.get('/home', (req, res) => {
 
