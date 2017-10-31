@@ -54,7 +54,7 @@ var UserSchema = new mongoose.Schema({
 });
 
 
-/*
+/* //for control what data send user in json format
 UserSchema.methods.toJSON = function () {
     var user = this;
     var userObject = user.toObject();

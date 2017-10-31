@@ -5,14 +5,11 @@ const { User } = require('./models/users');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cookieParser = require('cookie-parser')
-const { authenticate } = require('./middleware/authenticate')
-const useragent = require('express-useragent');
-const fs =require('fs');
+const cookieParser = require('cookie-parser');
+const { authenticate } = require('./middleware/authenticate');
 
 
-var app = express()
-app.use(useragent.express());
+var app = express();
 app.use(cookieParser('M#9l.n3|?+{@)<v'));
 
 app.use('/css', express.static(path.join(__dirname, './../public/css')));
@@ -26,12 +23,32 @@ app.set('views', path.join(__dirname, './../public/views'));
 
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 app.get('/', authenticate, (req, res) => {
   res.redirect('/home');
 });
+
+
+app.get('/login',(req,res)=>{
+
+    var token = req.signedCookies['x-auth'];
+    if (token) {
+        User.findByToken(token).then((user)=>{
+            if(!user){
+                return res.clearCookie('x-auth').redirect('/login');
+            }
+            res.redirect('/home')
+        }).catch((e)=>{
+            res.clearCookie('x-auth').redirect('/login');
+        })
+    }
+    else{
+        res.render('Login');
+    }
+});
+
 
 app.post('/login', urlencodedParser, (req, res) => {
 
@@ -44,26 +61,12 @@ app.post('/login', urlencodedParser, (req, res) => {
   })
 })
 
-app.get('/login',(req,res)=>{
-
-  var token = req.signedCookies['x-auth'];
-    if (token) {
-      User.findByToken(token).then((user)=>{
-        if(!user){
-          return res.clearCookie('x-auth').redirect('/login');
-        }
-        res.redirect('/home')
-      }).catch((e)=>{
-        res.clearCookie('x-auth').redirect('/login');
-      })
-    }
-    else{
-      res.render('Login');
-    }
+app.get('/createaccount',(req,res)=>{
+    res.render('Createaccount');
 });
 
 
-app.post('/register', urlencodedParser, (req, res) => {
+app.post('/createaccount', urlencodedParser, (req, res) => {
   var user = new User(req.body);
   user.save().then(() => {
     return user.generateAuthToken();
@@ -72,10 +75,6 @@ app.post('/register', urlencodedParser, (req, res) => {
   }).catch((e) => {
     res.status(400).send(e);
   });
-});
-
-app.get('/register',(req,res)=>{
-  res.render('register');
 });
 
 app.get('/home', (req, res) => {
@@ -90,6 +89,7 @@ app.get('/home', (req, res) => {
         }
         res.send(user);
       }).catch((e)=>{
+        console.log(e);
         res.clearCookie('x-auth').redirect('/');
       })
       
@@ -102,7 +102,7 @@ app.get('/home', (req, res) => {
   
 });
 
-var server = app.listen(80,()=>{
+const server = app.listen(80, () => {
     console.log('server is running on port 80');
 });
 
