@@ -108,6 +108,16 @@ UserSchema.statics.findByToken = function (token) {
 
 };
 
+UserSchema.statics.findByEmailID=function (email) {
+    var User = this;
+
+    return User.findOne({ EmailId: email }).then((user) => {
+        if (!user) {
+            return false;
+        }
+        return true;
+    });
+};
 
 UserSchema.statics.findByCredentials = function (email, password) {
     var User = this;
